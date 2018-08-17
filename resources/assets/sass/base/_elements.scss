@@ -1,0 +1,14 @@
+// HEADINGS
+h1 {
+	margin: 10px 0;
+}
+
+div.panel-heading h1 {
+	margin: 0;
+}
+
+@media screen and (max-width: 767px) {
+.table-responsive {
+	border: none;
+}
+}

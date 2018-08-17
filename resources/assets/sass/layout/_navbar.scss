@@ -1,0 +1,52 @@
+.navbar {
+		background-color: $brand-primary;
+	}
+	.navbar-default {
+		.navbar-nav {
+			> li {
+				> a {
+					color: $white;
+					border-bottom: 2px solid $brand-primary;
+					&:hover,
+					&:focus {
+						color: $white;
+						border-bottom-color: $white;
+					}
+				}
+			}
+			.active {
+				> a {
+					background-color: $brand-primary;
+					color: $white;
+					border-bottom-color: $white;
+					&:hover,
+					&:focus {
+						color: $white;
+						background-color: $brand-primary;
+					}
+				}
+			}
+		}
+		.navbar-brand {
+			color: $white;
+			&:hover {
+				color: $white;
+			}
+		}
+
+		.navbar-toggle .icon-bar {
+			background-color: $white;
+		}
+	}
+	.navbar-nav {
+		> li {
+			> a {
+				padding-bottom: 12px;
+			}
+		}
+	}
+
+	.navbar__beta {
+		font-size:11px;
+		font-style:italic;
+	}

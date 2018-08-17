@@ -1,0 +1,27 @@
+.footer {
+	box-shadow: 0px 500px 0px 500px $alice-blue; // I'm not seeing any change when I remove this.
+	margin-top: 4rem;
+	border-top: 1px solid rgba($cornflower-blue, 0.15);
+	background-color: $alice-blue;
+	padding-top: 1.5rem;
+	padding-bottom: 0;
+	&__link {
+		color: $slate-gray;
+		font-size: 13px;
+		font-weight: 500;
+		&:hover {
+			color: $mine-shaft;
+		}
+	}
+	&__list-item {
+		padding-bottom: .1rem;
+	}
+	&__heading {
+		text-transform: uppercase;
+		letter-spacing: .1rem;
+		font-size: 13px;
+		font-weight: 700;
+		color: $slate-gray;		
+		padding-bottom: .15rem;	
+	}
+}

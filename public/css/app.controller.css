@@ -1,0 +1,25 @@
+
+.form-search-bar{
+	width:40%;
+	float:left;
+	margin-right:10px;
+}
+.form-head h1{
+	margin: 0px;
+}
+.form-nav li{
+	margin-top: 12px;
+}
+span.form-parent {
+    font-weight: 600;
+    margin: 1px;
+}
+span.form-child {
+    font-weight: 600;
+    margin: 4px;
+}
+.form-url-bar{
+	width:70%;
+	float:left;
+	margin-right:10px;
+}

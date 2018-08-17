@@ -1,0 +1,15 @@
+.card {
+	border: 1px solid $quill-gray;
+	padding: 15px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	&__title {
+		margin-top: 15px;
+	}
+	&__info {
+		margin-bottom: 15px;
+	}
+	&__actions {
+		text-align: right;
+	}
+}

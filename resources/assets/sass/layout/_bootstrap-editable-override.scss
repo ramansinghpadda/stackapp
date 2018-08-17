@@ -1,0 +1,14 @@
+td {
+	.form-inline .form-group,
+	.form-inline .form-control,
+	.editable-input,
+	.editable-container.editable-inline {
+		display: block;
+	}
+	.form-inline .form-control {
+		width: 100%;
+	}
+	.editable-buttons {
+		text-align: right;
+	}
+}

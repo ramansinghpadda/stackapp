@@ -1,0 +1,27 @@
+//NOTIFICATIONS
+.alert {
+	margin: 0 0 10px 0;
+	padding: 10px;
+	color: $white;
+	border: none;
+	&-info {
+		background-color: $brand-info;
+	}
+	&-success {
+		background-color: $brand-success;
+	}
+	&-danger {
+		background-color: $brand-danger;
+	}
+	&-warning {
+		background-color: $brand-warning;
+	}
+	&__inline-link {
+		color: $white;
+		font-weight: 400;
+		text-decoration: underline;
+		&:hover {
+			color: $white;
+		}
+	}
+}

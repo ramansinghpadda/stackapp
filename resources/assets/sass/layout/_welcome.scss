@@ -1,0 +1,85 @@
+.homepage {
+
+	&__title {
+		text-align:center;
+		font-weight: 900;
+	}
+
+	&__title__p {
+			font-size:24px;
+			text-align:center;
+			padding-top: 20px;
+		}
+
+	&__image {
+		text-align: center;
+		margin-top: 30px;
+	}
+	&__lead {
+
+		.card {
+			padding:0;
+			border: 1px solid $cornflower-blue;
+		}
+
+		.card__email__controls {
+			background-color: $cornflower-blue;
+			color: $white;
+		}
+		.card__email__controls, .card__email__recipients, .card__email__subject, .card__email__message {
+			padding: 10px;
+		}
+		.card__email__subject {
+			border-top: 1px solid $alice-blue;
+			border-bottom: 1px solid $alice-blue;
+		}
+
+		.card__email__recipients, .card__email__subject {
+			color: $slate-gray;
+			font-size:0.9em;
+		}
+
+		h2 {
+			font-size:2.4em;
+			text-align:center;
+			color: $cornflower-blue;
+			font-weight: 800;
+		}
+
+		div > h3 {
+			font-weight: 800;
+		}
+
+		div > p {
+			font-size:18px;
+			font-weight: 300;
+			line-height:1.5em;
+			margin-top:10px;
+		}
+	}
+
+	&__register {
+
+		label {
+			font-size: 22px;
+		}
+
+		h2 {
+			border-top: 1px solid $light-grey;
+			padding-top: 30px;
+			margin-bottom: 30px;
+			text-align:center;
+		}
+	}
+
+	&__more {
+		h4 {
+			text-align:center;
+			color: $cornflower-blue;
+			font-size:2.6em;
+			margin-top:50px;
+			font-weight: 600;
+		}
+	}
+
+}

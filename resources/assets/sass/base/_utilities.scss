@@ -1,0 +1,38 @@
+.panel, .panel-default, .panel-heading, .panel-footer,  .panel-default > .panel-heading {
+	border: none;
+	background-color:inherit;
+}
+
+.panel {
+	box-shadow: none;
+}
+
+.panel-footer {
+	border: none;
+}
+
+//applications search results on organization/id
+.service_catalog_ajax-results {
+	margin-top:5px;	
+}
+
+.service_catalog_ajax-results {
+	> li.application-suggestion {
+		padding: 5px;
+		margin-bottom: 5px;
+		background-color: $quill-gray;
+	}
+}
+
+//modal
+.modal__application-add {
+
+	.modal-header {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+
+	&__p {
+		margin-bottom:0px;
+	}
+}

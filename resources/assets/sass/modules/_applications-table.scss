@@ -1,0 +1,89 @@
+.applications-table {
+
+	.editable-empty, .editable-empty:hover, .editable-empty:focus {
+		color: $quill-gray;
+	}
+
+	a.editable-click {
+   	 	text-decoration: none;
+    	border-bottom: dashed 1px $quill-gray;
+    }
+
+     a.editable-click:hover {
+     	text-decoration: bold;
+     	color: $brand-primary;
+    	border-bottom: dashed 1px $brand-primary;
+    	cursor: pointer;
+     }
+
+    .editable-click {
+    	border-bottom: dashed 1px $quill-gray;
+    }
+
+    .th__fixed {
+    	background-color: $light-grey;
+    }
+
+	&__link_name {
+		color: $slate-gray;
+
+		&:hover {
+			color: $mine-shaft;
+			text-decoration: none;
+		}
+	}
+
+	&__col-name {
+		font-weight:bold;
+	}
+
+	&__letter-icon {
+		position: relative;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		vertical-align: bottom;
+		color: $slate-gray;
+		text-transform: uppercase;
+		text-decoration: none;
+		&:before {
+			content: attr(first-letter);
+			font-weight: bold;
+			@include center-middle();
+		}
+	}
+
+	&__thead {
+		background-color: $alice-blue;	
+	}
+
+	&__th {
+		color: $brand-primary;
+	}
+
+	&__input__filter {
+		padding:2px 5px;
+		background-color: $alice-blue;
+		border:$alice-blue 1px solid;
+		font-weight: 200;
+	}
+		
+	&__input__filter:focus {
+			border:$alice-blue 1px solid;
+		}
+
+	&__input__filter::placeholder {
+			color:$cornflower-blue;
+		}
+
+	&__body-td {
+		border-top: none;
+		border-bottom: 2px solid $light-grey;
+		padding:15px 10px;
+	}
+
+	&__link-view {
+		color: $quill-gray;
+		font-weight:600;
+	}
+}

@@ -1,0 +1,205 @@
+@extends('layouts.app') @section('content')
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    @include('organizations.navigation')
+                </div>
+               
+                <div class="panel-body">
+                    <div class="p-B10">
+                     @if(Auth::user()->userrole($organization)->canAccess('add-application'))
+                        <button class="btn btn-success" onclick="addApplication()"><i class="glyphicon glyphicon-plus"></i> Add application</button>
+                     @endif
+                     <a class="btn btn-danger pull-right" href="{{ route('organization-application',$organization) }}">Clear Filters</a>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="table-responsive">
+
+                <table class="table applications__table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            @if (Auth::user()->userrole($organization)->canAccess('update-application'))
+                            <th></th>
+                            @endif
+                            <th>Application 
+                                        <span class="sorter pull-right">
+                                            <a data-sort-column="appName" data-sort-order="asc"class="{{ $sort=='appName' && $sortOrder=='asc' ? 'active' : '' }}" href="javascript:void(0)"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                                            <a data-sort-column="appName" data-sort-order="desc" class="{{ $sort=='appName' && $sortOrder=='desc' ? 'active' : '' }}" href="javascript:void(0)"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                                        </span>
+                            </th>
+                            @if ($groups->count() > 0)
+                            <th>Group(s)
+                                
+                            </th>
+                            @endif
+                            @foreach($metaAttributes as $attribute)
+                            <th>{{$attribute->meta->name}}
+                                <span class="sorter pull-right">
+                                            <a data-sort-column="meta_{{ $attribute->meta->id }}" data-sort-order="asc" class="{{ $sort=='meta_'.$attribute->meta->id && $sortOrder=='asc' ? 'active' : '' }}" href="javascript:void(0)"><i class="glyphicon glyphicon-arrow-up"></i></a>
+                                            <a data-sort-column="meta_{{ $attribute->meta->id }}" data-sort-order="desc" class="{{ $sort=='meta_'.$attribute->meta->id && $sortOrder=='desc' ? 'active' : '' }}" href="javascript:void(0)"><i class="glyphicon glyphicon-arrow-down"></i></a>
+                                </span>
+                            </th>
+                            @endforeach
+                        </tr>
+                        <tr class="filters">
+                            @if (Auth::user()->userrole($organization)->canAccess('update-application'))
+                            <th></th>
+                            @endif
+                            <th><input value="{{ $appName }}" onkeyup="filterApplications(this)" type="text"  name="appName"/></th>
+                            @if ($groups->count() > 0)
+                            <th>
+                                <select name="groups" onchange="filterApplications(this)" class="form-control" style="height:28px">
+                                    <option value="">All</option>
+                                    @foreach($groups as $group)
+                                        <option value="{{ $group->id }}" {{ $group->id == $groupID ? 'selected' : ''}}>{{ $group->name }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            @endif
+                            @foreach($metaAttributes as $attribute)
+                            <th>
+                                @if($attribute->meta->type == 'date')
+                                <input value="{{ isset($mappings[$attribute->meta->id]['from']) ?  $mappings[$attribute->meta->id]['from'] : ''}}" class="col-md-6 datepicker" onchange="filterApplications(this)" name="mappings[{{ $attribute->meta->id }}][from]" type="text" />
+                                <input value="{{ isset($mappings[$attribute->meta->id]['to']) ?  $mappings[$attribute->meta->id]['to'] : ''}}" class="col-md-6 datepicker" onchange="filterApplications(this)" name="mappings[{{ $attribute->meta->id }}][to]" type="text" /> @else
+                                <input value="{{ isset($mappings[$attribute->meta->id]) ?  $mappings[$attribute->meta->id] : ''}}" onkeyup="filterApplications(this)" name="mappings[{{ $attribute->meta->id }}]" type="text"  /> @endif
+                            </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody id="ajax-response">
+                        @include('applications._application-list')
+                    </tbody>
+                </table>
+            </div>
+            <div><ul class="pagination">
+                    <li><a href="{{ $applications->previousPageUrl() }}">Previous</a></li>
+                    <li><a href="#">Page : {{ $applications->currentPage() }}</a></li>
+                    <li><a href="{{ $applications->nextPageUrl() }}">Next</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div id="addApplicationModal" class="modal fade modal__application-add" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">
+                    Add an application
+                </h3>
+            </div>
+            <div class="modal-body">
+                @if(!Auth::user()->planAppLimitValid($organization))
+                <div class="alert alert-warning">
+                    You cannot add more applications. @if (Auth::user()->userrole($organization)->name == "owner") Please <a href="{{route('user-subscription')}}" class="alert__inline-link">upgrade</a> your plan. @endif
+                </div>
+                @else
+                <p class="modal__application-add__p">Search for an application, or add your custom application:</p>
+                <input class="form-control" placeholder="Type the name of the application..." onkeyup="searchServiceCatelog(this);" type="text" id="application" />
+                <div id="search-response"></div>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function addApplication(){
+            $('#addApplicationModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            });
+    }
+    var ajax = null;
+    function searchServiceCatelog(element){ 
+        if($(element).val().length >= 3){
+            if(ajax){
+                ajax.abort();
+            }
+
+            ajax = $.ajax({
+                url:"{{ url('/servicecatalog/search') }}",
+                data:{ q: $(element).val()},
+                beforeSend:function(){
+                     $('#search-response').html('Searching ... ');
+                },
+                success:function(response){
+                        $('#search-response').html(response);
+                }
+            });
+        }else{
+            $('#search-response').html("");
+        }
+    }
+
+    function addNewApplication(id){
+        $.ajax({
+            url:"{{ route('organization-application-new',$organization->id) }}",
+            type:'POST',
+            data:{ serviceId:id,
+                name : $('#application').val(),
+                "_token": "{{ csrf_token() }}"
+            } ,
+            beforeSend:function(){
+                    $('#search-response').html('Adding application, please wait ... ');
+            },
+            success:function(response){
+                    window.location.reload();
+            },
+            error: function(ts) { 
+                var errorMessage= '<div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">×</button>'+ts.responseJSON.error+'</div>';
+                $('#search-response').html(errorMessage);
+            }
+        });
+    }
+
+    function filterApplications(element){
+        window.location.href="{{ route('organization-application',$organization) }}?sort={{$sort}}&sortOrder={{ $sortOrder }}&"+$('tr.filters').find('input').serialize()+"&"+$('tr.filters').find('select').serialize();
+        /*$.ajax({
+            url:"{{ route('organization-search',$organization) }}",
+            data: $('tr.filters').find('input').serialize()+"&"+$('tr.filters').find('select').serialize(),
+            success:function(response){
+                $('#ajax-response').html(response);
+            }
+            
+        });*/
+    }
+</script>
+
+
+@endsection 
+@section('styles')
+<link href="{{ asset('/DataTables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
+@endsection
+@section('scripts')
+<style>
+ .sorter a{
+    color:#fff;
+}
+.sorter a.active{
+    color:#3a88e3;
+}
+</style>
+<script>
+    $( function() {
+        $(".datepicker" ).datepicker({dateFormat:"yy-mm-dd"});
+
+        $('.sorter a').click(function(event){
+            window.location.href="{{ route('organization-application',$organization) }}?sort="+$(this).attr('data-sort-column')+"&sortOrder="+$(this).attr('data-sort-order')+"&"+$('tr.filters').find('input').serialize()+"&"+$('tr.filters').find('select').serialize();
+        });
+    });
+
+
+</script>
+<script src="{{ asset('/DataTables/js/dataTables.bootstrap.min.js') }}"></script>
+@endsection
